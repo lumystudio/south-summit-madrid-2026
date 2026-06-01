@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>South Summit Madrid 2026 — Side Events Directory</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #faf7f3;
+            --surface: #ffffff;
+            --purple: #2d1b4e;
+            --purple-deep: #1d1033;
+            --coral: #ed546c;
+            --text: #2d1b4e;
+            --muted: #7a7388;
+            --border: #ece6df;
+            --border-strong: #ddd5ca;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        /* Header */
+        header {
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+            position: sticky; top: 0; z-index: 100;
+        }
+        .header-content {
+            max-width: 1080px; margin: 0 auto; padding: 3rem 2rem 2.25rem;
+            display: flex; justify-content: space-between; align-items: flex-start; gap: 1.5rem; flex-wrap: wrap;
+        }
+        .eyebrow { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 3px; color: var(--coral); font-weight: 600; margin-bottom: 0.85rem; }
+        h1 {
+            font-family: 'Fraunces', Georgia, serif;
+            font-size: 3rem; font-weight: 500; line-height: 1.05;
+            letter-spacing: -1px; color: var(--purple); margin-bottom: 0.6rem;
+        }
+        .subtitle { color: var(--muted); font-weight: 400; font-size: 1.02rem; }
+
+        .saved-counter {
+            display: flex; align-items: center; gap: 0.5rem;
+            background: transparent; border: 1.5px solid var(--border-strong);
+            border-radius: 999px; padding: 0.6rem 1.1rem;
+            color: var(--purple); font-size: 0.85rem; font-weight: 600;
+            cursor: pointer; transition: all 0.2s ease; white-space: nowrap;
+        }
+        .saved-counter:hover { border-color: var(--coral); color: var(--coral); }
+        .saved-counter.active { background: var(--coral); border-color: var(--coral); color: #fff; }
+        .saved-counter span:first-child { font-size: 1rem; }
+
+        .container { max-width: 1080px; margin: 0 auto; padding: 3.5rem 2rem 4rem; }
+
+        /* Filters */
+        .filters { margin-bottom: 3.5rem; }
+        .filter-group { margin-bottom: 2rem; }
+        .filter-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2.5px; color: var(--muted); margin-bottom: 0.9rem; display: block; font-weight: 600; }
+        .filter-buttons { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+        .filter-btn {
+            padding: 0.55rem 1.05rem; border: 1.5px solid var(--border-strong); border-radius: 999px;
+            background: transparent; color: var(--purple);
+            cursor: pointer; font-size: 0.85rem; font-weight: 500; font-family: inherit; transition: all 0.2s ease;
+        }
+        .filter-btn:hover { border-color: var(--purple); }
+        .filter-btn.active { background: var(--purple); border-color: var(--purple); color: #fff; }
+
+        /* Category badges — flat, restrained, tinted */
+        .category-badge { display: inline-block; padding: 0.32rem 0.7rem; border-radius: 5px; font-size: 0.66rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 1rem; }
+        .cat-networking { background: #fdeef0; color: #c23a52; }
+        .cat-sector     { background: #e9f3ee; color: #2f7d5b; }
+        .cat-lp         { background: #efeaf6; color: #5b3d8f; }
+        .cat-scaleup    { background: #e9eef7; color: #3a5a93; }
+        .cat-education  { background: #fdecef; color: #b8455e; }
+        .cat-corporate  { background: #edecf3; color: #4a4566; }
+        .cat-special    { background: #f1eaf3; color: #6d3d75; }
+        .cat-community  { background: #e7f2f3; color: #2c7080; }
+
+        .results-count { font-size: 0.88rem; color: var(--muted); margin-bottom: 0.5rem; }
+        .results-count strong { color: var(--purple); }
+
+        .day-heading {
+            font-family: 'Fraunces', Georgia, serif;
+            font-size: 1.35rem; font-weight: 500; color: var(--purple);
+            margin: 3rem 0 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--border);
+        }
+
+        .events-list { display: grid; gap: 0.85rem; }
+        .event-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 14px; padding: 1.6rem 1.75rem; cursor: pointer;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+        }
+        .event-card:hover { border-color: var(--border-strong); box-shadow: 0 6px 24px rgba(45,27,78,0.06); transform: translateY(-1px); }
+        .event-card.expanded { border-color: var(--coral); box-shadow: 0 8px 30px rgba(237,84,108,0.10); }
+
+        .event-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+        .event-main { flex: 1; }
+        .event-title { font-family: 'Fraunces', Georgia, serif; font-size: 1.3rem; font-weight: 500; color: var(--purple); margin-bottom: 0.9rem; line-height: 1.25; }
+        .event-controls { display: flex; align-items: center; gap: 0.85rem; flex-shrink: 0; }
+
+        .star-btn { background: none; border: none; cursor: pointer; font-size: 1.45rem; color: var(--border-strong); transition: all 0.2s ease; line-height: 1; padding: 0; }
+        .star-btn:hover { color: var(--coral); transform: scale(1.15); }
+        .star-btn.saved { color: var(--coral); }
+
+        .expand-icon { font-size: 0.85rem; color: var(--muted); transition: transform 0.3s ease; }
+        .event-card.expanded .expand-icon { transform: rotate(180deg); }
+
+        .event-meta { display: flex; flex-wrap: wrap; gap: 1.4rem; font-size: 0.86rem; color: var(--muted); }
+        .meta-item { display: flex; align-items: center; gap: 0.45rem; }
+        .meta-item strong { color: var(--text); font-weight: 500; }
+
+        .event-details { display: none; margin-top: 1.6rem; padding-top: 1.6rem; border-top: 1px solid var(--border); }
+        .event-card.expanded .event-details { display: block; }
+        .detail-section { margin-bottom: 1.1rem; }
+        .detail-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 0.35rem; display: block; font-weight: 600; }
+        .detail-text { color: #4a4458; line-height: 1.65; font-size: 0.95rem; }
+        .access-level { display: inline-block; padding: 0.35rem 0.8rem; background: #e9f3ee; border-radius: 6px; color: #2f7d5b; font-size: 0.8rem; font-weight: 600; }
+        .access-level.invitation { background: #fdeef0; color: #c23a52; }
+
+        /* Stats */
+        .summary { margin-top: 4.5rem; padding-top: 3rem; border-top: 1px solid var(--border); }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 2rem; }
+        .stat-number { font-family: 'Fraunces', Georgia, serif; font-size: 2.6rem; font-weight: 500; color: var(--purple); margin-bottom: 0.3rem; }
+        .stat-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); }
+
+        .no-results { text-align: center; padding: 3rem 2rem; color: var(--muted); }
+
+        /* About / Footer */
+        .about-footer { margin-top: 4.5rem; padding: 3rem; background: var(--purple); border-radius: 18px; color: #e8e3f0; }
+        .about-footer h3 { font-family: 'Fraunces', Georgia, serif; font-size: 1.5rem; font-weight: 500; color: #fff; margin-bottom: 1.1rem; letter-spacing: -0.3px; }
+        .about-footer p { color: #c5bcd6; line-height: 1.75; margin-bottom: 1.25rem; max-width: 620px; font-size: 0.98rem; }
+        .linkedin-link {
+            display: inline-flex; align-items: center; gap: 0.55rem;
+            background: var(--coral); color: #fff; text-decoration: none;
+            padding: 0.8rem 1.4rem; border-radius: 999px; font-weight: 600; font-size: 0.92rem;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+        .linkedin-link:hover { background: #e23b56; transform: translateY(-1px); }
+        .linkedin-link span:first-child { font-weight: 700; }
+        .disclaimer { margin-top: 2.25rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.12); color: #9b91b0; font-size: 0.78rem; line-height: 1.65; max-width: 720px; }
+
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; padding: 2.25rem 1.5rem 1.75rem; }
+            h1 { font-size: 2.15rem; }
+            .container { padding: 2.5rem 1.5rem 3rem; }
+            .event-card { padding: 1.35rem 1.4rem; }
+            .event-meta { gap: 0.9rem; font-size: 0.82rem; }
+            .about-footer { padding: 2rem 1.75rem; }
+            .stat-number { font-size: 2.1rem; }
+        }
+
+        .event-cta { margin-top: 1.4rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+        .register-link {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            border: 1.5px solid var(--coral); color: var(--coral);
+            text-decoration: none; padding: 0.55rem 1.1rem; border-radius: 999px;
+            font-weight: 600; font-size: 0.85rem; transition: all 0.2s ease;
+        }
+        .register-link:hover { background: var(--coral); color: #fff; }
+        .no-link-note { font-size: 0.82rem; color: var(--muted); font-style: italic; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div>
+                <div class="eyebrow">Independent Companion Guide</div>
+                <h1>South Summit Madrid 2026</h1>
+                <p class="subtitle">Side events directory &middot; May 28 &ndash; June 5 &middot; Madrid</p>
+            </div>
+            <div class="saved-counter" id="savedCounter" onclick="toggleSavedView()">
+                <span>&starf;</span> <span id="savedCount">0</span> Saved
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="filters">
+            <div class="filter-group">
+                <label class="filter-label">Category</label>
+                <div class="filter-buttons" id="categoryFilters">
+                    <button class="filter-btn active" data-filter="all">All Events</button>
+                    <button class="filter-btn" data-filter="networking">Networking &amp; Social</button>
+                    <button class="filter-btn" data-filter="sector">Sector-Specific</button>
+                    <button class="filter-btn" data-filter="lp">Investor / LP</button>
+                    <button class="filter-btn" data-filter="scaleup">Scale-up / Founders</button>
+                    <button class="filter-btn" data-filter="corporate">Corporate</button>
+                    <button class="filter-btn" data-filter="special">Special Forums</button>
+                    <button class="filter-btn" data-filter="community">Community</button>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <label class="filter-label">Day</label>
+                <div class="filter-buttons" id="dayFilters">
+                    <button class="filter-btn active" data-day="all">All Days</button>
+                    <button class="filter-btn" data-day="28">May 28</button>
+                    <button class="filter-btn" data-day="2">June 2</button>
+                    <button class="filter-btn" data-day="3">June 3</button>
+                    <button class="filter-btn" data-day="4">June 4</button>
+                    <button class="filter-btn" data-day="5">June 5</button>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <label class="filter-label">Access</label>
+                <div class="filter-buttons" id="accessFilters">
+                    <button class="filter-btn active" data-access="all">All Access</button>
+                    <button class="filter-btn" data-access="open">Open / RSVP</button>
+                    <button class="filter-btn" data-access="invite">Invite Only</button>
+                    <button class="filter-btn" data-access="application">Application Required</button>
+                    <button class="filter-btn" data-access="paid">Paid Ticket</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="results-count">
+            Showing <strong id="eventCount">0</strong> event<span id="eventPlural">s</span><span id="savedNote"></span>
+        </div>
+
+        <div id="eventsContainer"></div>
+
+        <div class="no-results" id="noResults" style="display: none;">
+            No events match your filters. Try widening them.
+        </div>
+
+        <div class="summary">
+            <div class="stats-grid">
+                <div><div class="stat-number" id="totalEvents">0</div><div class="stat-label">Events Tracked</div></div>
+                <div><div class="stat-number">5</div><div class="stat-label">Days</div></div>
+                <div><div class="stat-number">20K+</div><div class="stat-label">Expected Attendees</div></div>
+            </div>
+        </div>
+
+        <div class="about-footer">
+            <h3>About this directory</h3>
+            <p>Built by Fana Colette &mdash; a marketing &amp; growth strategist based in Madrid. South Summit&rsquo;s side events were scattered across Lu.ma, LinkedIn, and private channels, so I pulled them together into one place to make the week easier to navigate.</p>
+            <p>Built for the community. Always up for a good conversation.</p>
+            <a class="linkedin-link" href="https://www.linkedin.com/in/fana-c/" target="_blank" rel="noopener">
+                <span>in</span> Connect on LinkedIn
+            </a>
+            <div class="disclaimer">
+                Independent project. Not affiliated with, endorsed by, or sponsored by South Summit or its organizers. Event details are compiled from public sources and may change &mdash; always confirm via the official event page before attending. Last updated June 2026.
+            </div>
+        </div>
+    </div>
+
+<script>
+        const events = [
+            { id: 1, title: 'TheVentureCity Summit 2026: "Back to the Future"', category: 'networking', day: 28, sortTime: 900, time: 'Full day (May 28)', location: 'Madrid (venue disclosed on approval)', type: 'Annual Summit', capacity: '300+', description: 'Annual TVC summit gathering 300+ founders, investors, and LPs. Topics: agentic AI, quantum, physical AI, mobility, energy, robotics. Many international VCs attending South Summit also attend this.', speakers: 'TheVentureCity community', accessLevel: 'Invite-only', access: 'invite', isInvitation: true, link: null },
+            { id: 2, title: 'SOUTH SUMMIT Open Coffee | Founders & Investors', category: 'networking', day: 2, sortTime: 1030, time: '10:30 - 12:30', location: 'GRUPO LETS offices, Madrid', type: 'Community Meetup', capacity: 'Open', description: 'Community-driven, facilitated conversation where founders, investors, operators and ecosystem builders introduce themselves, share challenges and opportunities. A relaxed start before the conference momentum takes over.', speakers: 'Hosted by SIA Angel Hub x GRUPO LETS', accessLevel: 'Open / free (RSVP)', access: 'open', isInvitation: false, link: 'https://luma.com/1rdqwegt' },
+            { id: 3, title: 'Invest in Madrid - South Summit 2026', category: 'corporate', day: 2, sortTime: 1200, time: '12:00 - 17:00', location: 'Digitaliza Madrid, C. de Embajadores 181, Arganzuela', type: 'Institutional Event', capacity: '200+', description: 'Free institutional welcome event for foreign companies attending South Summit. Pitches Madrid as an investment destination with focus on LatAm.', speakers: 'Madrid ecosystem leaders', accessLevel: 'Free (Eventbrite)', access: 'open', isInvitation: false, link: null },
+            { id: 4, title: 'Run Your Business Madrid - South Summit Edition', category: 'community', day: 2, sortTime: 1900, time: '19:00 - 21:30', location: 'Madrid (exact address shared on registration)', type: 'Run Club + Networking', capacity: '60+', description: 'A meeting point for founders, builders, operators and investors who want to connect outside the office while staying active. Easy-pace run followed by drinks and networking at Luk Beer.', speakers: 'Lucia Arenzana (Luk Beer), Eduardo Podoswa (Grupo Zentir)', accessLevel: 'Approval required - 5 euros', access: 'application', isInvitation: false, link: 'https://luma.com/667695t7' },
+            { id: 5, title: 'SOUTH SUMMIT Investor Kickoff: SIA Angels & Beers', category: 'lp', day: 2, sortTime: 2000, time: '20:00 - 22:00', location: 'Madrid (venue via registration)', type: 'Investor Meetup', capacity: '100+', description: 'Relaxed evening bringing together angel investors, VCs, accelerators and active ecosystem players before the conference kicks off. No panels, no pitches - just good people, good conversations, and drinks.', speakers: 'Hosted by SIA Angel Hub x GRUPO LETS', accessLevel: 'Open (RSVP via Lu.ma)', access: 'open', isInvitation: false, link: 'https://luma.com/kb7vmhrb' },
+            { id: 6, title: 'AI Builders & Backers: South Summit Kickoff at ElevenLabs House', category: 'networking', day: 3, sortTime: 1900, time: '19:00 - 21:30', location: 'ElevenLabs Madrid office, Justicia (address on approval)', type: 'Invite-only Kickoff', capacity: '80+', description: 'Exclusive kickoff for AI founders, builders, and VCs at ElevenLabs new Madrid office. Beer, food, and networking. Co-hosted with Next Tier Ventures, Shilling VC, and Lumo Labs.', speakers: 'Marcos Valera, Oscar Lance + AI ecosystem', accessLevel: 'Invite-only - waitlist full', access: 'invite', isInvitation: true, link: 'https://luma.com/g3p13bvf' },
+            { id: 7, title: 'MAD Social Summits (Private Dinners & Sunset Cocktails)', category: 'networking', day: 3, sortTime: 2000, time: 'Evenings (June 3 & 4)', location: 'Premium Madrid venues (Florida Park, etc.)', type: 'VIP Social', capacity: '100+', description: 'South Summit most exclusive off-site gatherings. Private dinners and sunset cocktails to build deep relationships with global decision-makers.', speakers: 'South Summit VIP network', accessLevel: 'VIP / Executive tier only', access: 'invite', isInvitation: true, link: 'https://www.southsummit.io/' },
+            { id: 9, title: 'Corporate Innovation Leaders Breakfast', category: 'corporate', day: 3, sortTime: 800, time: 'Morning', location: 'IE University, Aula Magna Valentin Diez Morodo', type: 'Breakfast Meeting', capacity: '80+', description: 'Exclusive breakfast for innovation directors and C-level leaders. Discussion of innovation strategies.', speakers: 'C-suite innovators', accessLevel: 'Invite-only', access: 'invite', isInvitation: true, link: null },
+            { id: 10, title: 'The TGS Breakfast @ South Summit Madrid 2026', category: 'corporate', day: 4, sortTime: 900, time: '09:00 - 11:30', location: 'Bendita Bakery, Avenida Real de Pinto 21, Madrid', type: 'Breakfast Meeting', capacity: 'Limited', description: 'Exclusive breakfast gathering during South Summit week, hosted by The Growth Syndicate.', speakers: 'The Growth Syndicate', accessLevel: 'Invite-only - limited spots', access: 'invite', isInvitation: true, link: 'https://luma.com/4cpzgaa7' },
+            { id: 11, title: 'Sobremesa by Enzo Ventures - South Summit', category: 'networking', day: 4, sortTime: 1400, time: '14:00 - late', location: 'Armando Una Nave, C/ de Feijoo 5, Chamberi', type: 'Long Lunch & Evening', capacity: '80', description: 'Founder Lunch (14:00-16:30) then Open Sobremesa (16:30-late). No panels, no pitches - wine, music, and unhurried conversation with founders and early-stage VCs. Counter-programmed against panel fatigue.', speakers: 'Enzo Ventures (Nadhila Wardhana, Ivan Fernandez Lucas, Edgar Vicente)', accessLevel: 'Invite-only - waitlist', access: 'invite', isInvitation: true, link: 'https://luma.com/ihexd8wx' },
+            { id: 12, title: 'Movers & Shakers Lunch', category: 'corporate', day: 4, sortTime: 1300, time: 'Midday', location: 'La Nave, Madrid (private area)', type: 'Curated Lunch', capacity: '30', description: 'Curated informal lunch for top CIOs, C-level operators and institutional leaders. Highest density of institutional operators.', speakers: 'C-suite operators', accessLevel: 'Invite-only', access: 'invite', isInvitation: true, link: 'https://www.southsummit.io/' },
+            { id: 13, title: 'Founders x Founders (Closed-Door Peer Space)', category: 'scaleup', day: 4, sortTime: 1100, time: 'During conference', location: 'La Nave, Madrid (private space)', type: 'Peer Forum', capacity: '60+', description: 'Closed-door peer space for scale-up founders to share growth challenges and international expansion strategies.', speakers: 'Scale-up founders', accessLevel: 'Application / curated invite', access: 'application', isInvitation: true, link: 'https://www.southsummit.io/' },
+            { id: 14, title: 'Deeptech Forum', category: 'special', day: 4, sortTime: 1000, time: 'During conference', location: 'La Nave, Madrid (private forum)', type: 'Specialized Forum', capacity: '100+', description: 'Private forum for deeptech founders, investors, corporates and research institutions on moving science from lab to market.', speakers: 'Deeptech founders, research institutions', accessLevel: 'Application / invite-only', access: 'application', isInvitation: true, link: 'https://www.southsummit.io/' },
+            { id: 15, title: 'Defense & Dual-Use Forum', category: 'special', day: 4, sortTime: 1030, time: 'During conference', location: 'La Nave, Madrid', type: 'Government Forum', capacity: '150', description: 'NEW for 2026. Co-designed with the Spanish Ministry of Defence and NATO DIANA accelerator. Founders, technologists, investors and government on dual-use tech.', speakers: 'Spanish MoD, NATO DIANA, defense-tech founders', accessLevel: 'Application / invite-only', access: 'application', isInvitation: true, link: 'https://www.southsummit.io/' },
+            { id: 16, title: 'AI Forum', category: 'sector', day: 4, sortTime: 1130, time: 'During conference', location: 'La Nave, Madrid', type: 'Expert Roundtables', capacity: '200+', description: 'NEW for 2026. Expert-led roundtables on practical AI adoption for businesses. Included with Executive/Business passes.', speakers: 'AI experts, practitioners', accessLevel: 'Business Pass+', access: 'paid', isInvitation: false, link: 'https://www.southsummit.io/' },
+            { id: 17, title: 'Buyers Club', category: 'corporate', day: 4, sortTime: 1200, time: 'During conference', location: 'La Nave, Madrid', type: 'Marketplace', capacity: '200+', description: 'NEW for 2026. Curated marketplace where leading corporations meet tech scale-ups with ready-to-deploy solutions.', speakers: 'Corporate buyers, scale-ups', accessLevel: 'Application-based (scale-ups)', access: 'application', isInvitation: false, link: 'https://www.southsummit.io/' },
+            { id: 18, title: 'Hope Dose x IE x Climate Tech Cocktails', category: 'sector', day: 4, sortTime: 1900, time: '19:00 - 22:00', location: 'Hotel du Temps, C. del Barco 3, Madrid', type: 'Climate Happy Hour', capacity: 'Limited', description: 'Climate tech happy hour bringing together climate startups and investors. No panels - just drinks and networking. Climate tech startups can apply for lightning introductions.', speakers: 'Hosted by Hope Dose x IE University x South Summit', accessLevel: 'Open - 5 euros (incl. drink)', access: 'open', isInvitation: false, link: 'https://luma.com/gs2h2opg' },
+            { id: 19, title: 'South Summit - Ecosystem Party by Google for Startups', category: 'networking', day: 4, sortTime: 2000, time: '20:00 - 02:30', location: 'MAGERIT Cocktail Bar, Madrid', type: 'Party', capacity: 'Open', description: 'Late-night ecosystem party hosted by Google for Startups during South Summit week. Drinks, music, and high-energy networking into the early hours.', speakers: 'Google for Startups community', accessLevel: 'Open / RSVP (Lu.ma)', access: 'open', isInvitation: false, link: 'https://luma.com/5nta5byf' },
+            { id: 20, title: 'South Summit Official After Party', category: 'networking', day: 4, sortTime: 2030, time: 'Evening (Day 2)', location: 'La Nave & downtown Madrid', type: 'Social Event', capacity: 'Open', description: 'Free with any Attendee ticket. The lowest-friction networking moment for first-timers without access to the MAD Social Summits.', speakers: 'South Summit community', accessLevel: 'All passes', access: 'paid', isInvitation: false, link: 'https://www.southsummit.io/' },
+            { id: 22, title: 'Nucleate Spain Pitch Day', category: 'sector', day: 5, sortTime: 1430, time: 'Afternoon (time TBC)', location: 'Madrid (venue TBC)', type: 'Pitch Event', capacity: '120+', description: 'Deeptech / biotech pitch day hosted by Nucleate. Pairs naturally with the Deeptech Forum.', speakers: 'Biotech founders, VCs', accessLevel: 'Invite-only / waitlist', access: 'invite', isInvitation: true, link: null }
+        ];
+
+        const dayLabels = { 28: 'Wednesday, May 28', 2: 'Tuesday, June 2', 3: 'Wednesday, June 3', 4: 'Thursday, June 4', 5: 'Friday, June 5' };
+        const dayOrder = [28, 2, 3, 4, 5];
+
+        const categoryClasses = { networking: 'cat-networking', sector: 'cat-sector', lp: 'cat-lp', scaleup: 'cat-scaleup', education: 'cat-education', corporate: 'cat-corporate', special: 'cat-special', community: 'cat-community' };
+        const categoryLabels = { networking: 'Networking & Social', sector: 'Sector-Specific', lp: 'Investor / LP', scaleup: 'Scale-up / Founders', education: 'Education', corporate: 'Corporate', special: 'Special Forum', community: 'Community' };
+
+        let selectedCategory = 'all';
+        let selectedDay = 'all';
+        let selectedAccess = 'all';
+        let showSavedOnly = false;
+        let savedEvents = loadSaved();
+
+        function loadSaved() {
+            try { const raw = localStorage.getItem('ssm26_saved'); return raw ? JSON.parse(raw) : []; }
+            catch (e) { return []; }
+        }
+        function persistSaved() { try { localStorage.setItem('ssm26_saved', JSON.stringify(savedEvents)); } catch (e) {} }
+        function toggleSave(id, ev) {
+            ev.stopPropagation();
+            if (savedEvents.includes(id)) savedEvents = savedEvents.filter(x => x !== id);
+            else savedEvents.push(id);
+            persistSaved(); updateSavedCounter(); render();
+        }
+        function updateSavedCounter() {
+            document.getElementById('savedCount').textContent = savedEvents.length;
+            const c = document.getElementById('savedCounter');
+            if (showSavedOnly) c.classList.add('active'); else c.classList.remove('active');
+        }
+        function toggleSavedView() { showSavedOnly = !showSavedOnly; updateSavedCounter(); render(); }
+
+        function getFiltered() {
+            return events.filter(e => {
+                const c = selectedCategory === 'all' || e.category === selectedCategory;
+                const d = selectedDay === 'all' || e.day == selectedDay;
+                const a = selectedAccess === 'all' || e.access === selectedAccess;
+                const s = !showSavedOnly || savedEvents.includes(e.id);
+                return c && d && a && s;
+            });
+        }
+
+        function badge(cat) { return '<span class="category-badge ' + categoryClasses[cat] + '">' + categoryLabels[cat] + '</span>'; }
+
+        function ctaHTML(e) {
+            if (e.link) {
+                const label = e.link.indexOf('luma.com') !== -1 ? 'View &amp; register' : 'Official event page';
+                return '<a class="register-link" href="' + e.link + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">' + label + ' &rarr;</a>';
+            }
+            return '<span class="no-link-note">No public registration link yet</span>';
+        }
+
+        function eventCardHTML(e) {
+            const isSaved = savedEvents.includes(e.id);
+            return '<div class="event-card" id="card-' + e.id + '" onclick="toggleExpand(' + e.id + ')">' +
+                '<div class="event-top"><div class="event-main">' +
+                badge(e.category) +
+                '<div class="event-title">' + e.title + '</div>' +
+                '<div class="event-meta">' +
+                    '<div class="meta-item"><span>&#128336;</span><strong>' + e.time + '</strong></div>' +
+                    '<div class="meta-item"><span>&#128205;</span><strong>' + e.location + '</strong></div>' +
+                    '<div class="meta-item"><span>&#128101;</span><strong>' + e.capacity + '</strong></div>' +
+                '</div></div>' +
+                '<div class="event-controls">' +
+                    '<button class="star-btn ' + (isSaved ? 'saved' : '') + '" onclick="toggleSave(' + e.id + ', event)" title="Save event">' + (isSaved ? '&starf;' : '&star;') + '</button>' +
+                    '<span class="expand-icon">&#9660;</span>' +
+                '</div></div>' +
+                '<div class="event-details">' +
+                    '<div class="detail-section"><label class="detail-label">About</label><div class="detail-text">' + e.description + '</div></div>' +
+                    '<div class="detail-section"><label class="detail-label">Hosts / Speakers</label><div class="detail-text">' + e.speakers + '</div></div>' +
+                    '<div class="detail-section"><label class="detail-label">Access</label><div class="access-level ' + (e.isInvitation ? 'invitation' : '') + '">' + e.accessLevel + '</div></div>' +
+                    '<div class="event-cta">' + ctaHTML(e) + '</div>' +
+                '</div></div>';
+        }
+
+        function render() {
+            const filtered = getFiltered();
+            const container = document.getElementById('eventsContainer');
+            const noResults = document.getElementById('noResults');
+            document.getElementById('eventCount').textContent = filtered.length;
+            document.getElementById('eventPlural').textContent = filtered.length !== 1 ? 's' : '';
+            document.getElementById('savedNote').textContent = showSavedOnly ? ' (saved only)' : '';
+            if (filtered.length === 0) { container.innerHTML = ''; noResults.style.display = 'block'; return; }
+            noResults.style.display = 'none';
+            let html = '';
+            dayOrder.forEach(day => {
+                const dayEvents = filtered.filter(e => e.day === day).sort((a, b) => a.sortTime - b.sortTime);
+                if (dayEvents.length === 0) return;
+                html += '<div class="day-heading">' + dayLabels[day] + '</div>';
+                html += '<div class="events-list">';
+                dayEvents.forEach(e => { html += eventCardHTML(e); });
+                html += '</div>';
+            });
+            container.innerHTML = html;
+        }
+
+        function toggleExpand(id) { const c = document.getElementById('card-' + id); if (c) c.classList.toggle('expanded'); }
+
+        function setupFilter(containerId, attr, setter) {
+            document.getElementById(containerId).addEventListener('click', (e) => {
+                if (!e.target.classList.contains('filter-btn')) return;
+                document.querySelectorAll('#' + containerId + ' .filter-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                setter(e.target.dataset[attr]); render();
+            });
+        }
+
+        setupFilter('categoryFilters', 'filter', v => selectedCategory = v);
+        setupFilter('dayFilters', 'day', v => selectedDay = v);
+        setupFilter('accessFilters', 'access', v => selectedAccess = v);
+
+        document.getElementById('totalEvents').textContent = events.length;
+        updateSavedCounter();
+        render();
+    </script>
+</body>
+</html>
